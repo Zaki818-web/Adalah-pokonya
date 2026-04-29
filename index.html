@@ -3,58 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💖</title>
+
+<title>Untuk Kamu 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
+body{
   margin:0;
   height:100vh;
-  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
   display:flex;
   justify-content:center;
   align-items:center;
-  font-family:sans-serif;
-  overflow:hidden;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  font-family:'Poppins',sans-serif;
 }
 
-/* CARD */
 .card{
+  width:90%;
+  max-width:380px;
   background:white;
   padding:20px;
   border-radius:20px;
-  width:90%;
-  max-width:380px;
   text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  position:relative;
 }
 
-/* BUTTON */
+h2{
+  font-weight:600;
+}
+
 button{
   padding:12px 18px;
   border:none;
   border-radius:10px;
   background:#ff4d6d;
   color:white;
-  font-size:16px;
+  font-size:15px;
 }
 
-/* TEXT ANIMATION */
-#intro{
-  font-size:16px;
-  margin-top:10px;
-  min-height:40px;
-  color:#444;
-}
-
-/* IMAGE */
+/* FOTO */
 img{
   width:100%;
+  margin-top:15px;
   border-radius:15px;
-  margin-top:10px;
   opacity:0;
   transform:scale(0.95);
-  transition:0.7s;
+  transition:0.8s ease;
 }
 
 .show{
@@ -62,16 +57,13 @@ img{
   transform:scale(1) !important;
 }
 
-/* FLOAT HEART */
-.heart{
-  position:absolute;
-  color:#ff4d6d;
-  animation: floatUp 4s linear infinite;
-}
-
-@keyframes floatUp{
-  0%{transform:translateY(100px); opacity:1;}
-  100%{transform:translateY(-500px); opacity:0;}
+/* TEKS ROMANTIS */
+#text{
+  margin-top:10px;
+  font-size:14px;
+  color:#444;
+  min-height:60px;
+  line-height:1.5;
 }
 </style>
 </head>
@@ -79,57 +71,59 @@ img{
 <body>
 
 <div class="card">
-  <h2>💌 Ada sesuatu buat kamu</h2>
+  <h2>💌 Special For You</h2>
+
   <button onclick="start()">Buka 💖</button>
 
-  <div id="intro"></div>
+  <div id="text"></div>
 
   <img id="foto">
-
 </div>
 
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="lagu.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-const images = [
+
+const images=[
 "foto1","foto2","foto3","foto4","foto5",
 "foto6","foto7","foto8","foto9","foto10",
 "foto11","foto12","foto13","foto14","foto15"
 ];
 
-let i=0;
-let music;
-
-// TEKS BIAR TIDAK KOSONG
-const texts = [
-"aku ada sesuatu buat kamu...",
-"bukan hal besar, tapi penting...",
-"aku cuma mau bilang...",
-"kamu itu berarti banget...",
-"dan hari ini spesial...",
-"selamat ulang tahun 💖"
+const messages=[
+"aku nggak tau harus mulai dari mana...",
+"tapi hari ini aku cuma mau kamu tahu satu hal...",
+"kamu itu berarti banget buat aku.",
+"bukan karena kamu sempurna...",
+"tapi karena kamu selalu jadi alasan aku tenang.",
+"setiap hari aku bersyukur pernah kenal kamu.",
+"walaupun kita nggak selalu sempurna...",
+"tapi aku selalu mau ada di sisi kamu.",
+"kalau dunia lagi nggak baik ke kamu...",
+"aku harap kamu ingat kalau aku selalu di sini.",
+"selamat ulang tahun ya ❤️",
+"semoga semua yang kamu mau pelan-pelan tercapai.",
+"dan semoga kamu nggak pernah merasa sendirian lagi.",
+"aku mungkin nggak selalu bisa sempurna...",
+"tapi aku selalu mau berusaha buat kamu."
 ];
 
-function typeText(text){
-  let el=document.getElementById("intro");
-  el.innerHTML="";
-  let j=0;
+let i=0;
+let t=0;
 
-  let t=setInterval(()=>{
-    el.innerHTML+=text[j];
-    j++;
-    if(j>=text.length) clearInterval(t);
-  },50);
-}
+let music=document.getElementById("music");
 
 function start(){
+
   document.querySelector("button").style.display="none";
 
-  // intro pertama
-  typeText(texts[0]);
+  music.play();
 
-  setTimeout(()=>{
-    showImage();
-    loveRain();
-  },1500);
+  showImage();
+  typeText();
 
   setInterval(()=>{
     i++;
@@ -137,27 +131,27 @@ function start(){
     showImage();
   },2500);
 
-  // teks jalan
-  let t=1;
   setInterval(()=>{
-    if(t<texts.length){
-      typeText(texts[t]);
-      t++;
-    }
-  },3000);
+    t++;
+    if(t>=messages.length) t=0;
+    typeText();
+  },4000);
 }
 
+/* FOTO */
 function showImage(){
   let img=document.getElementById("foto");
   img.classList.remove("show");
 
   setTimeout(()=>{
-    tryLoad(img,images[i],0);
+    load(img,images[i],0);
   },200);
 }
 
-function tryLoad(img,name,step){
+/* AUTO DETECT */
+function load(img,name,step){
   const ext=[".jpg",".jpeg",".JPG"];
+
   if(step>=ext.length) return;
 
   img.src=name+ext[step];
@@ -167,22 +161,26 @@ function tryLoad(img,name,step){
   }
 
   img.onerror=()=>{
-    tryLoad(img,name,step+1);
+    load(img,name,step+1);
   }
 }
 
-/* LOVE EFFECT */
-function loveRain(){
-  setInterval(()=>{
-    let heart=document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"%";
-    document.body.appendChild(heart);
+/* TEKS NGETIK */
+function typeText(){
+  let el=document.getElementById("text");
+  el.innerHTML="";
+  let word=messages[t];
+  let i=0;
 
-    setTimeout(()=>heart.remove(),4000);
-  },300);
+  let typing=setInterval(()=>{
+    el.innerHTML+=word[i];
+    i++;
+    if(i>=word.length){
+      clearInterval(typing);
+    }
+  },40);
 }
+
 </script>
 
 </body>
