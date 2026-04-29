@@ -3,60 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untuk Kamu 💖</title>
+<title>For You 💖</title>
 
 <style>
 body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: sans-serif;
-  overflow: hidden;
+  margin:0;
+  height:100vh;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:sans-serif;
+  overflow:hidden;
 }
 
-.card {
-  text-align: center;
-  background: white;
-  padding: 20px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 360px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+/* CARD */
+.card{
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  width:90%;
+  max-width:380px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  position:relative;
 }
 
-button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  background: #ff4d6d;
-  color: white;
-  font-size: 16px;
+/* BUTTON */
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d6d;
+  color:white;
+  font-size:16px;
 }
 
-h1 {
-  color: #ff4d6d;
-  font-size: 22px;
+/* TEXT ANIMATION */
+#intro{
+  font-size:16px;
+  margin-top:10px;
+  min-height:40px;
+  color:#444;
 }
 
-p {
-  font-size: 15px;
+/* IMAGE */
+img{
+  width:100%;
+  border-radius:15px;
+  margin-top:10px;
+  opacity:0;
+  transform:scale(0.95);
+  transition:0.7s;
 }
 
-img {
-  width: 100%;
-  border-radius: 15px;
-  margin-top: 10px;
-  transition: 0.8s ease;
-  opacity: 0;
-  transform: scale(0.95);
+.show{
+  opacity:1 !important;
+  transform:scale(1) !important;
 }
 
-.show {
-  opacity: 1 !important;
-  transform: scale(1) !important;
+/* FLOAT HEART */
+.heart{
+  position:absolute;
+  color:#ff4d6d;
+  animation: floatUp 4s linear infinite;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(100px); opacity:1;}
+  100%{transform:translateY(-500px); opacity:0;}
 }
 </style>
 </head>
@@ -65,63 +80,108 @@ img {
 
 <div class="card">
   <h2>💌 Ada sesuatu buat kamu</h2>
-  <button onclick="start()">Klik ya sayang 💖</button>
+  <button onclick="start()">Buka 💖</button>
 
-  <div id="content" style="display:none;">
-    <h1>🎉 Happy Birthday 🎉</h1>
-    <p>Semoga kamu selalu bahagia ❤️</p>
+  <div id="intro"></div>
 
-    <img id="foto" src="" alt="foto">
-  </div>
+  <img id="foto">
+
 </div>
 
 <script>
-const baseNames = [
-  "foto1","foto2","foto3","foto4","foto5",
-  "foto6","foto7","foto8","foto9","foto10",
-  "foto11","foto12","foto13","foto14","foto15"
+const images = [
+"foto1","foto2","foto3","foto4","foto5",
+"foto6","foto7","foto8","foto9","foto10",
+"foto11","foto12","foto13","foto14","foto15"
 ];
 
-let index = 0;
-let interval;
+let i=0;
+let music;
 
-function start() {
-  document.querySelector("button").style.display = "none";
-  document.getElementById("content").style.display = "block";
+// TEKS BIAR TIDAK KOSONG
+const texts = [
+"aku ada sesuatu buat kamu...",
+"bukan hal besar, tapi penting...",
+"aku cuma mau bilang...",
+"kamu itu berarti banget...",
+"dan hari ini spesial...",
+"selamat ulang tahun 💖"
+];
 
-  showImage();
+function typeText(text){
+  let el=document.getElementById("intro");
+  el.innerHTML="";
+  let j=0;
 
-  interval = setInterval(() => {
-    index++;
-    if (index >= baseNames.length) index = 0;
-    showImage();
-  }, 2500);
+  let t=setInterval(()=>{
+    el.innerHTML+=text[j];
+    j++;
+    if(j>=text.length) clearInterval(t);
+  },50);
 }
 
-function showImage() {
-  const img = document.getElementById("foto");
+function start(){
+  document.querySelector("button").style.display="none";
+
+  // intro pertama
+  typeText(texts[0]);
+
+  setTimeout(()=>{
+    showImage();
+    loveRain();
+  },1500);
+
+  setInterval(()=>{
+    i++;
+    if(i>=images.length) i=0;
+    showImage();
+  },2500);
+
+  // teks jalan
+  let t=1;
+  setInterval(()=>{
+    if(t<texts.length){
+      typeText(texts[t]);
+      t++;
+    }
+  },3000);
+}
+
+function showImage(){
+  let img=document.getElementById("foto");
   img.classList.remove("show");
 
-  setTimeout(() => {
-    tryLoad(img, baseNames[index], 0);
-  }, 200);
+  setTimeout(()=>{
+    tryLoad(img,images[i],0);
+  },200);
 }
 
-// AUTO DETECT JPG / JPEG / JPG
-function tryLoad(img, name, step) {
-  const formats = [".jpg", ".jpeg", ".JPG"];
+function tryLoad(img,name,step){
+  const ext=[".jpg",".jpeg",".JPG"];
+  if(step>=ext.length) return;
 
-  if (step >= formats.length) return;
+  img.src=name+ext[step];
 
-  img.src = name + formats[step];
-
-  img.onload = () => {
+  img.onload=()=>{
     img.classList.add("show");
-  };
+  }
 
-  img.onerror = () => {
-    tryLoad(img, name, step + 1);
-  };
+  img.onerror=()=>{
+    tryLoad(img,name,step+1);
+  }
+}
+
+/* LOVE EFFECT */
+function loveRain(){
+  setInterval(()=>{
+    let heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"%";
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),4000);
+  },300);
 }
 </script>
 
