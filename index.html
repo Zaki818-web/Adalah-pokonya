@@ -22,7 +22,7 @@ body{
   position:fixed;
   width:100%;
   height:100%;
-  background:radial-gradient(circle,#111,#000);
+  background:black;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -33,13 +33,13 @@ body{
 
 #gate h1{
   font-size:22px;
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 #gate p{
   font-size:14px;
   opacity:0.8;
-  margin-bottom:18px;
+  margin-bottom:20px;
 }
 
 #gate button{
@@ -48,49 +48,23 @@ body{
   border-radius:12px;
   background:#ff4b5c;
   color:white;
-  font-size:15px;
+  font-size:16px;
   cursor:pointer;
-  box-shadow:0 0 25px #ff4b5c;
-  transition:0.3s;
+  box-shadow:0 0 20px #ff4b5c;
 }
 
-/* ===== BACKGROUND CINEMATIC HD LOOK ===== */
+/* ===== BACKGROUND ===== */
 .bg{
   position:fixed;
   width:100%;
   height:100%;
   background:center/cover no-repeat;
-  filter:brightness(0.7) contrast(1.2) saturate(1.25);
-  transform:scale(1.08);
-  transition:1s ease;
+  filter:brightness(0.7) contrast(1.15) saturate(1.2);
+  transform:scale(1.05);
+  transition:1s;
 }
 
-/* vignette + film look */
-body::after{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  top:0;
-  left:0;
-  pointer-events:none;
-  background:radial-gradient(circle,transparent 55%,rgba(0,0,0,0.75));
-}
-
-/* slight film grain */
-body::before{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  top:0;
-  left:0;
-  pointer-events:none;
-  opacity:0.05;
-  background-image:url("https://grainy-gradients.vercel.app/noise.svg");
-}
-
-/* ===== SCENE ===== */
+/* ===== CONTENT ===== */
 .scene{
   position:absolute;
   top:50%;
@@ -101,40 +75,32 @@ body::before{
   z-index:2;
 }
 
-/* FOTO (HD LOOK ENHANCER) */
+/* FOTO */
 #photo{
   width:270px;
   height:360px;
   object-fit:cover;
-  border-radius:20px;
-
-  /* 🔥 cinematic sharp look */
-  filter:contrast(1.15) saturate(1.2) brightness(1.05);
-  box-shadow:0 0 60px rgba(0,0,0,0.6);
-
+  border-radius:18px;
+  box-shadow:0 0 50px rgba(0,0,0,0.6);
   opacity:0;
-  transform:scale(1.08);
-  transition:1.2s ease;
+  transition:1s;
 }
 
 /* TITLE */
 .title{
   font-family:'Great Vibes',cursive;
-  font-size:44px;
+  font-size:42px;
   margin-bottom:8px;
-  text-shadow:0 0 15px rgba(255,255,255,0.6);
 }
 
-/* TEXT (RAPI + CINEMATIC SUBTITLE STYLE) */
+/* TEXT */
 #text{
-  margin-top:8px;
+  margin-top:10px;
   font-size:15px;
   max-width:340px;
   margin-left:auto;
   margin-right:auto;
   line-height:1.35;
-  letter-spacing:0.2px;
-  opacity:0.95;
 }
 
 /* HEART */
@@ -148,31 +114,27 @@ body::before{
   0%{transform:translateY(100vh);opacity:1;}
   100%{transform:translateY(-10vh);opacity:0;}
 }
-
-/* fade effect */
-.fade{
-  opacity:0 !important;
-  transform:scale(1.15) !important;
-}
 </style>
 </head>
 
 <body>
 
-<!-- GATE -->
+<!-- ===== GATE ===== -->
 <div id="gate">
   <h1>Jangan di skip ya ❤️</h1>
-  <p>Klik untuk mulai cerita ini</p>
+  <p>Klik untuk mulai</p>
   <button onclick="start()">KLIK 💖</button>
 </div>
 
-<!-- AUDIO -->
+<!-- ===== AUDIO (GITHUB SAFE) ===== -->
 <audio id="music" loop preload="auto">
-  <source src="audio.mp3" type="audio/mpeg">
+  <source src="./Audio.mp3" type="audio/mpeg">
 </audio>
 
+<!-- BACKGROUND -->
 <div class="bg" id="bg"></div>
 
+<!-- CONTENT -->
 <div class="scene">
   <div class="title">Selamat Ulang Tahun 🎉</div>
   <img id="photo">
@@ -187,29 +149,34 @@ function start(){
 
   let music=document.getElementById("music");
   music.volume=0.8;
-  music.play().catch(()=>{});
+
+  // FIX GITHUB AUDIO PLAY
+  let play=music.play();
+  if(play!==undefined){
+    play.catch(()=>console.log("Autoplay blocked"));
+  }
 
   story();
   hearts();
 }
 
-/* ===== STORY MODE CINEMATIC ===== */
+/* ===== STORY ===== */
 let scenes=[
-{img:"foto1.jpg.jpeg",text:"Hari ini bukan hari biasa… ini tentang kamu 💖"},
-{img:"foto2.jpg.jpeg",text:"Aku masih ingat semua awalnya…"},
-{img:"foto3.jpg.jpeg",text:"Dan sejak itu… semuanya berubah ✨"},
-{img:"foto4.jpg.jpeg",text:"Kamu jadi alasan aku tersenyum 💕"},
-{img:"foto5.jpg.jpeg",text:"Aku selalu berharap kamu bahagia 💘"},
-{img:"foto6.jpg.jpeg",text:"Terima kasih sudah ada ❤️"},
+{img:"foto1.jpg.jpeg",text:"Hari ini bukan hari biasa 💖"},
+{img:"foto2.jpg.jpeg",text:"Aku masih ingat semuanya..."},
+{img:"foto3.jpg.jpeg",text:"Dan sejak itu berubah ✨"},
+{img:"foto4.jpg.jpeg",text:"Kamu alasan senyumku 💕"},
+{img:"foto5.jpg.jpeg",text:"Aku ingin kamu bahagia 💘"},
+{img:"foto6.jpg.jpeg",text:"Terima kasih ❤️"},
 {img:"foto7.jpg.jpeg",text:"Aku bangga sama kamu 💖"},
-{img:"foto8.jpg.jpeg",text:"Kalau dunia berat… aku di sini 💔"},
-{img:"foto9.jpg.jpeg",text:"Dan sekarang…"},
-{img:"foto10.jpg.jpeg",text:"Aku cuma mau bilang…"},
+{img:"foto8.jpg.jpeg",text:"Aku di sini kalau kamu jatuh 💔"},
+{img:"foto9.jpg.jpeg",text:"Dan sekarang..."},
+{img:"foto10.jpg.jpeg",text:"Aku mau bilang..."},
 {img:"foto11.jpg.jpeg",text:"Aku sayang kamu ❤️"},
 {img:"foto12.jpg.jpeg",text:"Selalu."},
-{img:"foto13.jpg.jpeg",text:"Dan akan terus begitu."},
+{img:"foto13.jpg.jpeg",text:"Dan terus begitu."},
 {img:"foto14.jpg.jpeg",text:"Selamat ulang tahun 💖"},
-{img:"foto15.jpg.jpeg",text:"THE END… tapi rasa ini nggak pernah selesai"}
+{img:"foto15.jpg.jpeg",text:"THE END ❤️"}
 ];
 
 let i=0;
@@ -229,17 +196,17 @@ function story(){
 
     let s=scenes[i];
 
-    photo.classList.add("fade");
+    photo.style.opacity=0;
 
     setTimeout(()=>{
       photo.src=s.img;
       bg.style.backgroundImage="url("+s.img+")";
-      photo.classList.remove("fade");
+      photo.style.opacity=1;
 
       typeText(s.text,text);
       i++;
 
-      setTimeout(next,3400);
+      setTimeout(next,3500);
 
     },500);
   }
@@ -247,7 +214,7 @@ function story(){
   next();
 }
 
-/* ===== TYPE EFFECT (CINEMATIC SUBTITLE) ===== */
+/* ===== TYPE ===== */
 function typeText(msg,el){
   el.innerHTML="";
   let i=0;
@@ -256,16 +223,16 @@ function typeText(msg,el){
     if(i<msg.length){
       el.innerHTML+=msg.charAt(i);
       i++;
-      setTimeout(run,28);
+      setTimeout(run,25);
     }
   }
 
   run();
 }
 
-/* ===== HEARTS ===== */
+/* ===== HEART ===== */
 function hearts(){
-  for(let j=0;j<90;j++){
+  for(let j=0;j<80;j++){
     setTimeout(()=>{
       let h=document.createElement("div");
       h.className="heart";
@@ -273,7 +240,7 @@ function hearts(){
       h.style.left=Math.random()*100+"vw";
       document.body.appendChild(h);
       setTimeout(()=>h.remove(),6000);
-    },j*100);
+    },j*120);
   }
 }
 
